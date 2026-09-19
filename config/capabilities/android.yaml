@@ -1,0 +1,10 @@
+# app_id: framework config (clearApp / terminate / activate), not an Appium capability
+app_id: com.example.spotify_clone
+platformName: Android
+appium:automationName: UiAutomator2
+appium:deviceName: emulator-5554
+# neutral default; real path is machine-specific -> set ANDROID_APP_PATH in .env (local) or CI env
+appium:app: apps/spotify-clone.apk
+appium:appWaitActivity: "*"
+appium:newCommandTimeout: 120
+appium:autoGrantPermissions: true

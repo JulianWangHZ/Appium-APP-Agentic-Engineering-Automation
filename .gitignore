@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+evidence/
+reports/
+allure-results/
+allure-report/
+screenshots/
+logs/
+apps/*.apk
+apps/*.ipa
+apps/*.app
+.idea/
+.vscode/
+.DS_Store

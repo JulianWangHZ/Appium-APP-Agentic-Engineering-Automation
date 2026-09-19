@@ -1,0 +1,13 @@
+# app_id: framework config (clearApp / terminate / activate), not an Appium capability
+app_id: com.example.spotifyClone
+platformName: iOS
+appium:automationName: XCUITest
+appium:deviceName: iPhone 18 Pro
+appium:platformVersion: "27.0"
+# neutral default; real path is machine-specific -> set IOS_APP_PATH in .env (local) or CI env
+appium:app: apps/spotify-clone.app
+appium:newCommandTimeout: 120
+appium:autoAcceptAlerts: true
+# keep app state across session creation; scenarios that need a logged-out
+# start reset explicitly via AppSession (Given the app is in logged-out state)
+appium:noReset: true

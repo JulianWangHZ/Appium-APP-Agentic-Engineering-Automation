@@ -1,0 +1,54 @@
+[project]
+name = "appium-pytest-bdd-framework"
+version = "0.1.0"
+description = "Cross-platform (Android/iOS) mobile automation framework: pytest-bdd + Appium + Allure"
+requires-python = ">=3.11"
+dependencies = [
+    "Appium-Python-Client>=4.0",
+    "pytest>=8.0",
+    "pytest-bdd>=7.3",
+    "pytest-xdist>=3.5",
+    "pytest-rerunfailures>=14.0",
+    "allure-pytest>=2.13",
+    "pydantic-settings>=2.2",
+    "PyYAML>=6.0",
+    "requests>=2.31",
+    "python-dotenv>=1.0",
+    "Faker>=24.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.6",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+bdd_features_base_dir = "features"
+addopts = "--strict-markers --gherkin-terminal-reporter"
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+markers = [
+    "smoke: critical-path scenarios, run on every PR",
+    "regression: full suite, run nightly",
+    "android_only: scenarios that only run on Android",
+    "ios_only: scenarios that only run on iOS",
+    "signup: signup feature scenarios",
+    "auto: programmatically executable and verifiable",
+    "valid_account: happy path with valid signup credentials",
+    "boundary: true edge cases (thresholds, exhaustion, races, fault injection)",
+    "password_below_minimum: password shorter than the 8-char minimum",
+    "email_below_minimum: email shorter than the 6-char minimum",
+    "home: home screen feature scenarios",
+    "jump_back_in: the home 'Jump back in' shelf",
+    "now_playing_lyrics: now-playing track and lyrics view",
+    "open_playlist: opening a playlist from home",
+]
