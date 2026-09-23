@@ -1,5 +1,7 @@
 # Appium APP Agentic Engineering Automation
 
+**English** | [中文](README.zh.md)
+
 > A blueprint for agentic mobile E2E automation — Claude explores the live app, maps real locators, and generates BDD automation code. No manual selector hunting. No guessing.
 
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue)](https://www.python.org/)
