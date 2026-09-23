@@ -8,7 +8,6 @@
 [![Appium](https://img.shields.io/badge/appium-3.x-6a4c93)](https://appium.io/)
 [![pytest-bdd](https://img.shields.io/badge/pytest--bdd-7.x-0a9e5c)](https://pytest-bdd.readthedocs.io/)
 [![uv](https://img.shields.io/badge/package_manager-uv-de7a2e)](https://github.com/astral-sh/uv)
-[![Allure](https://img.shields.io/badge/report-allure-orange)](https://allurereport.org/)
 [![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20Android-lightgrey)]()
 
 ---
@@ -29,7 +28,7 @@
 | **Cross-platform** | Single codebase drives iOS (XCUITest) and Android (UiAutomator2); platform branches live inside Screen methods, not in test code |
 | **BDD-first** | Feature files are the single source of truth; automation code is a derived artifact |
 | **Parallel execution** | pytest-xdist distributes scenarios across workers; iOS and Android run in separate invocations |
-| **Allure reporting** | Per-step screenshots, device metadata, and failure diffs in a hosted Allure report |
+| **Custom reporting** | Per-step screenshots and failure diffs in a self-contained Markdown report (`reports/latest.md`) |
 
 ---
 
@@ -45,7 +44,7 @@
 | Python client | Appium-Python-Client | 4.x |
 | Package manager | uv | latest |
 | Config | pydantic-settings + YAML + .env | 2.x |
-| Reporting | Allure | 2.x |
+| Reporting | Custom Markdown report (built-in) | — |
 | Parallelism | pytest-xdist | 3.x |
 | Data generation | Faker | 24.x |
 
@@ -229,11 +228,12 @@ uv run pytest -m regression --platform=ios -n 2
 uv run pytest --lf --platform=ios
 ```
 
-### Generate Allure report
+### View the test report
+
+After any run, the report is written to `reports/latest.md` (symlink) and a timestamped file alongside it. Failed scenarios include step-level error messages and Appium screenshots embedded as image references.
 
 ```bash
-uv run pytest -m regression --platform=ios --alluredir=allure-results
-allure serve allure-results
+open reports/latest.md   # macOS Quick Look, or open in any Markdown viewer
 ```
 
 ---
@@ -248,6 +248,7 @@ allure serve allure-results
 | `uv run pytest -m smoke --platform=android` | Run Android smoke suite |
 | `uv run pytest -m regression -n 2` | Run full regression in parallel |
 | `uv run pytest --lf` | Rerun last-failed scenarios only |
+| `open reports/latest.md` | View the last run report |
 | `uv run ruff check .` | Lint — required before commit |
 | `uv run pytest tests/unit -q` | Device-free unit tests — required before commit |
 
@@ -308,7 +309,7 @@ Run tests on real devices in the cloud — no local simulator or emulator requir
 
 1. CI uploads the app binary to BrowserStack App Automate via REST API and gets back a `bs://...` URL.
 2. pytest runs with `APPIUM_SERVER_URL` pointing at the BrowserStack Appium hub — no local Appium needed.
-3. Results stream into BrowserStack's dashboard and Allure artifacts are uploaded to GitHub Actions.
+3. Results stream into BrowserStack's dashboard; the Markdown report is uploaded as a GitHub Actions artifact.
 
 ### Trigger a run
 

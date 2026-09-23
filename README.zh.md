@@ -8,7 +8,6 @@
 [![Appium](https://img.shields.io/badge/appium-3.x-6a4c93)](https://appium.io/)
 [![pytest-bdd](https://img.shields.io/badge/pytest--bdd-7.x-0a9e5c)](https://pytest-bdd.readthedocs.io/)
 [![uv](https://img.shields.io/badge/package_manager-uv-de7a2e)](https://github.com/astral-sh/uv)
-[![Allure](https://img.shields.io/badge/report-allure-orange)](https://allurereport.org/)
 [![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20Android-lightgrey)]()
 
 ---
@@ -29,7 +28,7 @@
 | **跨平台** | 單一程式碼庫驅動 iOS（XCUITest）和 Android（UiAutomator2）；平台差異封裝在 Screen method 內，不洩漏到測試層 |
 | **BDD 優先** | Feature file 是唯一真相；自動化程式碼是衍生產物 |
 | **並行執行** | pytest-xdist 跨 worker 分配 scenario；iOS 和 Android 分開執行 |
-| **Allure 報告** | 每步驟截圖、裝置 metadata、失敗差異比對 |
+| **自訂報告** | 每步驟截圖與失敗差異比對，輸出為自包含 Markdown 報告（`reports/latest.md`） |
 
 ---
 
@@ -45,7 +44,7 @@
 | Python 客戶端 | Appium-Python-Client | 4.x |
 | 套件管理 | uv | latest |
 | 設定管理 | pydantic-settings + YAML + .env | 2.x |
-| 報告 | Allure | 2.x |
+| 報告 | 自訂 Markdown 報告（內建） | — |
 | 並行執行 | pytest-xdist | 3.x |
 | 測試資料 | Faker | 24.x |
 
@@ -229,11 +228,12 @@ uv run pytest -m regression --platform=ios -n 2
 uv run pytest --lf --platform=ios
 ```
 
-### 產生 Allure 報告
+### 查看測試報告
+
+執行後報告自動寫入 `reports/latest.md`（symlink）及帶時間戳的同目錄檔案。失敗情境包含步驟級錯誤訊息與 Appium 截圖。
 
 ```bash
-uv run pytest -m regression --platform=ios --alluredir=allure-results
-allure serve allure-results
+open reports/latest.md   # macOS Quick Look，或任意 Markdown 閱讀器開啟
 ```
 
 ---
@@ -308,7 +308,7 @@ ANDROID_APP_PATH=apps/spotify-clone.apk  # .apk 的絕對或相對路徑
 
 1. CI 透過 REST API 上傳 App 二進位至 BrowserStack App Automate，取得 `bs://...` URL。
 2. pytest 以 `APPIUM_SERVER_URL` 指向 BrowserStack Appium hub 執行 — 無需本地 Appium。
-3. 結果串流至 BrowserStack Dashboard，Allure artifacts 上傳至 GitHub Actions。
+3. 結果串流至 BrowserStack Dashboard；Markdown 報告上傳為 GitHub Actions artifact。
 
 ### 觸發執行
 

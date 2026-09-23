@@ -11,14 +11,18 @@ Given steps that arrange data via API pass it to later steps with target_fixture
 """
 from __future__ import annotations
 
-import pytest
-from pytest_bdd import given
+# pytest_plugins must appear before other imports so pytest collects the
+# plugin during startup, before any fixtures are registered.
+pytest_plugins = ["core.report"]
 
-from api.base_client import BaseApiClient
-from config.settings import Settings
-from core.app_session import AppSession
-from flows.signup_flow import complete_signup
-from screens.catalog import Screens
+import pytest  # noqa: E402
+from pytest_bdd import given  # noqa: E402
+
+from api.base_client import BaseApiClient  # noqa: E402
+from config.settings import Settings  # noqa: E402
+from core.app_session import AppSession  # noqa: E402
+from flows.signup_flow import complete_signup  # noqa: E402
+from screens.catalog import Screens  # noqa: E402
 
 
 @pytest.fixture

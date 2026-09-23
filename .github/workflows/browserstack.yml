@@ -77,22 +77,13 @@ jobs:
         run: |
           uv run pytest -m "${{ inputs.suite }}" \
             --platform=${{ inputs.platform }} \
-            --alluredir=allure-results \
             -v
 
       # ── Artifacts ──────────────────────────────────────────────────────────
-      - name: Upload Allure results
+      - name: Upload test report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: allure-results-${{ inputs.platform }}-${{ inputs.suite }}
-          path: allure-results/
-          if-no-files-found: ignore
-
-      - name: Upload failure screenshots
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: screenshots-${{ inputs.platform }}-${{ inputs.suite }}
-          path: test-results/screenshots/
+          name: report-${{ inputs.platform }}-${{ inputs.suite }}
+          path: reports/
           if-no-files-found: ignore

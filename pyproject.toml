@@ -9,7 +9,6 @@ dependencies = [
     "pytest-bdd>=7.3",
     "pytest-xdist>=3.5",
     "pytest-rerunfailures>=14.0",
-    "allure-pytest>=2.13",
     "pydantic-settings>=2.2",
     "PyYAML>=6.0",
     "requests>=2.31",
