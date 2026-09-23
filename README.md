@@ -245,35 +245,75 @@ The only values you *must* set are the app paths. Everything else has a working 
 
 ---
 
-## Inspecting Locators
+## Quick Locator Inspection
 
-Use **Appium Locators Inspector** — a Chrome extension that connects to your local Appium session and shows the live element tree with ranked, verified locators.
+Three tools — pick by workflow:
+
+| Tool | Best for | Setup |
+|---|---|---|
+| **appium-mcp** | AI-driven — let Claude generate locators in one prompt | Already wired in this project |
+| **mobile-mcp** | AI-driven — lightweight MCP, no Appium session needed | `claude mcp add mobile-mcp -- npx -y @mobilenext/mobile-mcp@latest` |
+| **Appium Locators Inspector** | Human visual browsing — ranked/verified locators, record gestures | Chrome extension |
+
+---
+
+### appium-mcp (built-in)
+
+The planner agent uses this directly. You can too — ask Claude to inspect the current screen:
+
+```
+"what are the best locators for the Sign In button on screen?"
+```
+
+Key MCP tools called under the hood:
+
+| Tool | What it returns |
+|---|---|
+| `generate_locators` | Ranked locator candidates for an element — picks the most stable strategy |
+| `appium_get_page_source` | Full XML accessibility tree of the current screen |
+| `appium_find_element` | Verify a locator exists before putting it in code |
+| `appium_screenshot` | Screenshot — combine with `generate_locators` to inspect by position |
+
+Requires an active Appium session (`appium --port 4723` + a session created via `appium_session_management`).
+
+---
+
+### mobile-mcp (Mobile Next)
+
+Zero Appium setup. Add it to Claude Code once:
+
+```bash
+claude mcp add mobile-mcp -- npx -y @mobilenext/mobile-mcp@latest
+```
+
+Then ask Claude to interact with the live device directly — it reads the accessibility tree and drives gestures. Useful for quick one-off exploration before writing a Screen Object.
+
+Supports iOS Simulator, iOS real device, Android Emulator, and Android real device. Opt out of telemetry: `MOBILEMCP_DISABLE_TELEMETRY=1`.
+
+---
+
+### Appium Locators Inspector (Chrome extension)
+
+Visual element tree browser with ranked locators — best when you want to explore the app yourself.
 
 [![Install on Chrome](https://img.shields.io/badge/Chrome-Add%20to%20Chrome-4285F4?logo=googlechrome&logoColor=white)](https://chromewebstore.google.com/detail/appium-locators-inspector/annejeomdlkidljonmpmhcdnekkadjfb)
 
-### Installation
+**Setup:**
 
-1. Click **Add to Chrome** on the [Web Store listing](https://chromewebstore.google.com/detail/appium-locators-inspector/annejeomdlkidljonmpmhcdnekkadjfb)
-2. Open the extension → **Settings → Setup** → install the local companion (one command, auto-generated)
+1. Add to Chrome from the [Web Store](https://chromewebstore.google.com/detail/appium-locators-inspector/annejeomdlkidljonmpmhcdnekkadjfb)
+2. Open extension → **Settings → Setup** → run the one-line companion installer
 
    ![Setup](https://raw.githubusercontent.com/JulianWangHZ/Appium-Locators-Inspector/main/docs/images/hero-setup.png)
 
-3. Run **Environment Doctor** inside the extension — it reports exactly what's missing
+3. Run **Environment Doctor** — reports exactly what's missing
 
-### What it gives you
+**Inspect:**
 
 ![Inspector](https://raw.githubusercontent.com/JulianWangHZ/Appium-Locators-Inspector/main/docs/images/hero-inspector.png)
 
-| Feature | Detail |
-|---|---|
-| **Live UI Tree** | Real-time element tree from a running iOS simulator or Android emulator |
-| **Ranked locators** | Candidates evaluated against page source — unique ones flagged **Recommended**, fragile ones flagged **Brittle** |
-| **Locator strategies** | `accessibility id`, `resource-id`, `UiAutomator2`, iOS predicate string & class chain, XPath |
-| **Copy as Code** | One-click export as Python, Java, or TypeScript |
-| **Record → Test** | Tap through the app; each gesture becomes a step; exports as a runnable test file |
-| **100% local** | Communicates only with localhost — nothing leaves your machine |
+Unique locators are flagged **Recommended**; fragile ones flagged **Brittle**. One-click copy as Python, Java, or TypeScript.
 
-**Recording workflow:**
+**Record gestures → export test:**
 
 <table>
 <tr>
@@ -285,17 +325,6 @@ Use **Appium Locators Inspector** — a Chrome extension that connects to your l
 <td align="center">Export as a runnable test file</td>
 </tr>
 </table>
-
-### Workflow
-
-```
-1. Boot simulator / emulator
-2. Start Appium:  appium --port 4723
-3. Open Chrome → Appium Locators Inspector
-4. Create a session (or attach to existing)
-5. Tap any element in the mirrored screen → copy the Recommended locator
-6. Paste into your Screen Object's Locator declaration
-```
 
 ---
 
