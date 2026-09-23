@@ -134,6 +134,60 @@ bash scripts/check-env.sh
 
 ---
 
+## Appium 安裝設定
+
+### 安裝 Appium 與 drivers
+
+```bash
+npm install -g appium
+appium driver install xcuitest      # iOS
+appium driver install uiautomator2  # Android
+```
+
+### 啟動 Appium
+
+```bash
+appium --port 4723
+```
+
+成功啟動後，兩個 driver 都會載入，REST interface 監聽 `:4723`：
+
+![Appium 啟動](docs/images/appium-start.png)
+
+### Appium Inspector（選用 GUI 工具）
+
+[Appium Inspector](https://github.com/appium/appium-inspector) 是一個桌面應用程式，可手動建立 capabilities 並在跑自動化前驗證 session。
+
+![Appium Inspector](docs/images/appium-inspector.png)
+
+從 [releases 頁面](https://github.com/appium/appium-inspector/releases) 下載，連接到 `127.0.0.1:4723`，在 Capability Builder 中填入與 `config/capabilities/` 相符的值。
+
+---
+
+## WebDriverAgent 設定（僅 iOS）
+
+WebDriverAgent（WDA）是 iOS 的驅動橋接層，由 XCUITest driver 在第一次建立 session 時自動建置並安裝。**模擬器不需要手動操作。**
+
+**真機需要 code signing：**
+
+1. 開啟 WDA 專案：
+
+   ```bash
+   open ~/.appium/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent/WebDriverAgent.xcodeproj
+   ```
+
+2. 在 Xcode → Signing & Capabilities，為 `WebDriverAgentLib` 和 `WebDriverAgentRunner` 兩個 target 設定 **Team** 和 **Bundle Identifier**。
+
+3. 執行環境體檢確認一切就緒：
+
+   ```bash
+   bash scripts/check-env.sh
+   ```
+
+模擬器第一次執行時 WDA 會自動靜默建置，不需任何額外操作。
+
+---
+
 ## 快速開始
 
 ```bash

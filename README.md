@@ -134,6 +134,60 @@ bash scripts/check-env.sh
 
 ---
 
+## Appium Setup
+
+### Install Appium and drivers
+
+```bash
+npm install -g appium
+appium driver install xcuitest      # iOS
+appium driver install uiautomator2  # Android
+```
+
+### Start Appium
+
+```bash
+appium --port 4723
+```
+
+A successful start looks like this — both drivers loaded, REST interface listening on `:4723`:
+
+![Appium start](docs/images/appium-start.png)
+
+### Appium Inspector (optional GUI)
+
+[Appium Inspector](https://github.com/appium/appium-inspector) is a desktop app for manually building capabilities and verifying sessions before running automation.
+
+![Appium Inspector](docs/images/appium-inspector.png)
+
+Download from the [releases page](https://github.com/appium/appium-inspector/releases), connect to `127.0.0.1:4723`, and use the Capability Builder to match the values in `config/capabilities/`.
+
+---
+
+## WebDriverAgent Setup (iOS only)
+
+WebDriverAgent (WDA) is the iOS bridge built and installed automatically by the XCUITest driver on first session creation. No manual build is required for simulators.
+
+**For real devices**, code signing is needed:
+
+1. Open the WDA project:
+
+   ```bash
+   open ~/.appium/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent/WebDriverAgent.xcodeproj
+   ```
+
+2. In Xcode → Signing & Capabilities, set your **Team** and **Bundle Identifier** for both `WebDriverAgentLib` and `WebDriverAgentRunner` targets.
+
+3. Run the health-check to confirm everything is wired up:
+
+   ```bash
+   bash scripts/check-env.sh
+   ```
+
+For simulators, WDA builds and installs silently on first run — no action needed.
+
+---
+
 ## Quick Start
 
 ```bash
