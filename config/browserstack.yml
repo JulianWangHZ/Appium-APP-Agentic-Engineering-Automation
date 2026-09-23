@@ -1,0 +1,37 @@
+# BrowserStack App Automate — project-level defaults.
+# Credentials come from env vars: BROWSERSTACK_USERNAME / BROWSERSTACK_ACCESS_KEY
+# App ID comes from CI upload step: BROWSERSTACK_APP_ID (bs://...)
+#
+# Override any field via env var; field names follow BrowserStack YAML SDK convention.
+
+userName: ${BROWSERSTACK_USERNAME}
+accessKey: ${BROWSERSTACK_ACCESS_KEY}
+
+projectName: Appium-APP-Agentic-Engineering-Automation
+buildName: ${GITHUB_RUN_ID:-local}
+buildTag: ${GITHUB_REF_NAME:-dev}
+
+# ── Platforms ────────────────────────────────────────────────────────────────
+# Edit device/version to match your test matrix.
+# Full device list: https://www.browserstack.com/list-of-browsers-and-platforms/app_automate
+platforms:
+  - platformName: iOS
+    deviceName: iPhone 15 Pro
+    platformVersion: "17"
+  - platformName: android
+    deviceName: Google Pixel 7 Pro
+    platformVersion: "13.0"
+
+# ── App ──────────────────────────────────────────────────────────────────────
+# Populated at runtime by the CI upload step; set locally via BROWSERSTACK_APP_ID env var.
+app: ${BROWSERSTACK_APP_ID}
+
+# ── Behaviour ────────────────────────────────────────────────────────────────
+browserstackLocal: false
+debug: true
+networkLogs: true
+deviceLogs: true
+appProfiling: false
+
+# ── Parallelism ───────────────────────────────────────────────────────────────
+parallelsPerPlatform: 1

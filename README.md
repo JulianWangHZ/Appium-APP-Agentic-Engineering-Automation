@@ -293,6 +293,61 @@ The only values you *must* set are the app paths. Everything else has a working 
 
 ---
 
+## Cloud Execution (BrowserStack)
+
+Run tests on real devices in the cloud — no local simulator or emulator required.
+
+### Required secrets (GitHub → Settings → Secrets → Actions)
+
+| Secret | Where to find it |
+|---|---|
+| `BROWSERSTACK_USERNAME` | BrowserStack → Account → Settings |
+| `BROWSERSTACK_ACCESS_KEY` | BrowserStack → Account → Settings |
+
+### How it works
+
+1. CI uploads the app binary to BrowserStack App Automate via REST API and gets back a `bs://...` URL.
+2. pytest runs with `APPIUM_SERVER_URL` pointing at the BrowserStack Appium hub — no local Appium needed.
+3. Results stream into BrowserStack's dashboard and Allure artifacts are uploaded to GitHub Actions.
+
+### Trigger a run
+
+Go to **Actions → BrowserStack App Automate → Run workflow** and pick platform + suite:
+
+```
+platform: ios | android
+suite:    smoke | regression
+```
+
+### Device matrix
+
+Edit `config/browserstack.yml` to change devices:
+
+```yaml
+platforms:
+  - platformName: iOS
+    deviceName: iPhone 15 Pro
+    platformVersion: "17"
+  - platformName: android
+    deviceName: Google Pixel 7 Pro
+    platformVersion: "13.0"
+```
+
+Full device list: [BrowserStack App Automate devices](https://www.browserstack.com/list-of-browsers-and-platforms/app_automate)
+
+### App upload
+
+Place your build in `apps/` before triggering (the folder is gitignored):
+
+```
+apps/spotify-clone.ipa   # iOS
+apps/spotify-clone.apk   # Android
+```
+
+In a real pipeline, download the build artifact from your mobile CI job before the BrowserStack step runs.
+
+---
+
 ## Quick Locator Inspection
 
 Three tools — pick by workflow:

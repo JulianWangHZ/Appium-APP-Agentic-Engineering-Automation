@@ -293,6 +293,61 @@ ANDROID_APP_PATH=apps/spotify-clone.apk  # .apk 的絕對或相對路徑
 
 ---
 
+## 雲端執行（BrowserStack）
+
+在雲端真實裝置上執行測試，無需本地模擬器或模擬器。
+
+### 必要 Secrets（GitHub → Settings → Secrets → Actions）
+
+| Secret | 取得位置 |
+|---|---|
+| `BROWSERSTACK_USERNAME` | BrowserStack → Account → Settings |
+| `BROWSERSTACK_ACCESS_KEY` | BrowserStack → Account → Settings |
+
+### 執行流程
+
+1. CI 透過 REST API 上傳 App 二進位至 BrowserStack App Automate，取得 `bs://...` URL。
+2. pytest 以 `APPIUM_SERVER_URL` 指向 BrowserStack Appium hub 執行 — 無需本地 Appium。
+3. 結果串流至 BrowserStack Dashboard，Allure artifacts 上傳至 GitHub Actions。
+
+### 觸發執行
+
+前往 **Actions → BrowserStack App Automate → Run workflow**，選擇平台與測試套件：
+
+```
+platform: ios | android
+suite:    smoke | regression
+```
+
+### 裝置矩陣
+
+編輯 `config/browserstack.yml` 更換裝置：
+
+```yaml
+platforms:
+  - platformName: iOS
+    deviceName: iPhone 15 Pro
+    platformVersion: "17"
+  - platformName: android
+    deviceName: Google Pixel 7 Pro
+    platformVersion: "13.0"
+```
+
+完整裝置清單：[BrowserStack App Automate 裝置](https://www.browserstack.com/list-of-browsers-and-platforms/app_automate)
+
+### App 上傳
+
+執行前請將 build 放入 `apps/`（此目錄已加入 .gitignore）：
+
+```
+apps/spotify-clone.ipa   # iOS
+apps/spotify-clone.apk   # Android
+```
+
+實際 pipeline 中，請在 BrowserStack 步驟前從行動 CI job 下載 build artifact。
+
+---
+
 ## 快速 Locator 查找
 
 三種工具，依工作流選擇：
