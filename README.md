@@ -143,7 +143,7 @@ cd Appium-APP-Agentic-Engineering-Automation
 uv sync
 
 # 3. Configure
-cp .env.example .env   # fill in IOS_APP_PATH, ANDROID_APP_PATH, UDID, etc.
+cp .env.example .env   # then edit .env — see Configuration section below
 
 # 4. Start Appium
 appium --port 4723
@@ -202,6 +202,46 @@ allure serve allure-results
 | `uv run pytest --lf` | Rerun last-failed scenarios only |
 | `uv run ruff check .` | Lint — required before commit |
 | `uv run pytest tests/unit -q` | Device-free unit tests — required before commit |
+
+---
+
+## Configuration
+
+Copy the template and fill in your machine-specific values:
+
+```bash
+cp .env.example .env
+```
+
+`.env` is gitignored — never commit it. In CI, set the same variable names as repository secrets.
+
+```dotenv
+# ── App builds (required) ────────────────────────────────────────────────────
+IOS_APP_PATH=apps/spotify-clone.app       # absolute or relative path to .app
+ANDROID_APP_PATH=apps/spotify-clone.apk  # absolute or relative path to .apk
+
+# ── Device targeting (overrides capabilities yaml) ───────────────────────────
+# DEVICE_NAME=iPhone 18 Pro              # simulator name or emulator serial
+# UDID=                                  # pin a specific device / simulator
+
+# ── Parallel workers (xdist) ─────────────────────────────────────────────────
+# One set per worker when running -n N:
+# DEVICE_NAME_GW0=  UDID_GW0=  APPIUM_SERVER_URL_GW0=
+# DEVICE_NAME_GW1=  UDID_GW1=  APPIUM_SERVER_URL_GW1=
+
+# ── Tuning ───────────────────────────────────────────────────────────────────
+# APPIUM_SERVER_URL=http://127.0.0.1:4723   # default
+# EXPLICIT_WAIT=15                           # element wait in seconds
+# RERUNS=1                                   # flaky-retry count
+
+# ── App identity (only if testing a different build flavour) ─────────────────
+# IOS_APP_ID=com.example.spotifyClone
+# ANDROID_APP_ID=com.example.spotify_clone
+```
+
+**Priority chain:** env var → `capabilities/<platform>.yaml` → `environments/<env>.yaml`
+
+The only values you *must* set are the app paths. Everything else has a working default.
 
 ---
 
@@ -273,44 +313,4 @@ No `time.sleep` anywhere. Always wait on a business anchor:
 | `wait_not_visible(locator)` | Element must disappear (e.g. loading spinner) |
 | `wait_enabled(locator)` | Element must become interactive |
 | `tap_stable(locator)` | Re-render flakiness — taps after stability check |
-
----
-
-## Test Coverage
-
-| Feature | Scenarios | Automatable |
-|---|---|---|
-| Signup | 5 | 5 (`@auto`) |
-| Home — Jump Back In | 3 | 3 (`@auto`) |
-| Home — Now Playing / Lyrics | 2 | 2 (`@auto`) |
-| Home — Open Playlist | 2 | 2 (`@auto`) |
-
----
-
-## Notable Design Decisions
-
-**Evidence-first automation** — The planner agent probes the real device before any code is written. Every locator in the codebase has a corresponding live-device proof in `evidence/`. Invented selectors are rejected.
-
-**Single Screens catalog** — `screens/catalog.py` is the only place screens are instantiated. Steps access them via `screens.signup`, never with inline construction. Adding a screen = one `cached_property` in the catalog.
-
-**Explicit waits only** — `implicit_wait: 0` is enforced in capabilities. All waits are explicit and named by business intent, making flakiness traceable to the specific element and condition that timed out.
-
-**Config priority chain** — `env var > capabilities YAML > environment YAML`. Machine-specific values (device UDID, app path) come from env vars only; defaults in YAML keep unset = not broken.
-
-**Platform divergence inside methods** — When iOS and Android behave differently, the branch lives inside the Screen method behind `self.platform`. Feature files and step definitions stay platform-agnostic.
-
----
-
-## Environment Variables
-
-| Variable | Default | Purpose |
-|---|---|---|
-| `IOS_APP_PATH` | `apps/spotify-clone.app` | Path to iOS .app build |
-| `ANDROID_APP_PATH` | `apps/spotify-clone.apk` | Path to Android .apk build |
-| `APPIUM_SERVER_URL` | `http://127.0.0.1:4723` | Appium server URL |
-| `UDID` | — | Device/simulator UDID |
-| `DEVICE_NAME` | — | Overrides `appium:deviceName` in caps |
-| `EXPLICIT_WAIT` | `15` | Global explicit wait timeout (seconds) |
-| `IOS_BUNDLE` | `com.example.spotifyClone` | iOS app bundle id (env check) |
-| `ANDROID_PACKAGE` | `com.example.spotify_clone` | Android package name (env check) |
 
