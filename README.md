@@ -211,15 +211,18 @@ Use **Appium Locators Inspector** — a Chrome extension that connects to your l
 
 [![Install on Chrome](https://img.shields.io/badge/Chrome-Add%20to%20Chrome-4285F4?logo=googlechrome&logoColor=white)](https://chromewebstore.google.com/detail/appium-locators-inspector/annejeomdlkidljonmpmhcdnekkadjfb)
 
-![Appium Locators Inspector](docs/assets/inspector-screenshot.png)
-
 ### Installation
 
 1. Click **Add to Chrome** on the [Web Store listing](https://chromewebstore.google.com/detail/appium-locators-inspector/annejeomdlkidljonmpmhcdnekkadjfb)
 2. Open the extension → **Settings → Setup** → install the local companion (one command, auto-generated)
+
+   ![Setup](https://raw.githubusercontent.com/JulianWangHZ/Appium-Locators-Inspector/main/docs/images/hero-setup.png)
+
 3. Run **Environment Doctor** inside the extension — it reports exactly what's missing
 
 ### What it gives you
+
+![Inspector](https://raw.githubusercontent.com/JulianWangHZ/Appium-Locators-Inspector/main/docs/images/hero-inspector.png)
 
 | Feature | Detail |
 |---|---|
@@ -229,6 +232,19 @@ Use **Appium Locators Inspector** — a Chrome extension that connects to your l
 | **Copy as Code** | One-click export as Python, Java, or TypeScript |
 | **Record → Test** | Tap through the app; each gesture becomes a step; exports as a runnable test file |
 | **100% local** | Communicates only with localhost — nothing leaves your machine |
+
+**Recording workflow:**
+
+<table>
+<tr>
+<td><img src="https://raw.githubusercontent.com/JulianWangHZ/Appium-Locators-Inspector/main/docs/images/hero-record.png" alt="Recording"/></td>
+<td><img src="https://raw.githubusercontent.com/JulianWangHZ/Appium-Locators-Inspector/main/docs/images/hero-recorded.png" alt="Recorded test"/></td>
+</tr>
+<tr>
+<td align="center">Tap through the app to record steps</td>
+<td align="center">Export as a runnable test file</td>
+</tr>
+</table>
 
 ### Workflow
 
