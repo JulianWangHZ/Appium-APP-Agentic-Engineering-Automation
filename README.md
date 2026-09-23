@@ -154,14 +154,6 @@ A successful start looks like this — both drivers loaded, REST interface liste
 
 ![Appium start](docs/images/appium-start.png)
 
-### Appium Inspector (optional GUI)
-
-[Appium Inspector](https://github.com/appium/appium-inspector) is a desktop app for manually building capabilities and verifying sessions before running automation.
-
-![Appium Inspector](docs/images/appium-inspector.png)
-
-Download from the [releases page](https://github.com/appium/appium-inspector/releases), connect to `127.0.0.1:4723`, and use the Capability Builder to match the values in `config/capabilities/`.
-
 ---
 
 ## WebDriverAgent Setup (iOS only)

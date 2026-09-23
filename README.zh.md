@@ -154,14 +154,6 @@ appium --port 4723
 
 ![Appium 啟動](docs/images/appium-start.png)
 
-### Appium Inspector（選用 GUI 工具）
-
-[Appium Inspector](https://github.com/appium/appium-inspector) 是一個桌面應用程式，可手動建立 capabilities 並在跑自動化前驗證 session。
-
-![Appium Inspector](docs/images/appium-inspector.png)
-
-從 [releases 頁面](https://github.com/appium/appium-inspector/releases) 下載，連接到 `127.0.0.1:4723`，在 Capability Builder 中填入與 `config/capabilities/` 相符的值。
-
 ---
 
 ## WebDriverAgent 設定（僅 iOS）
