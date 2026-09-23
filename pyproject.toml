@@ -32,9 +32,9 @@ select = ["E", "F", "I", "UP", "B", "SIM"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 bdd_features_base_dir = "features"
-addopts = "--strict-markers --gherkin-terminal-reporter"
+addopts = "--strict-markers --gherkin-terminal-reporter -v -s --no-header"
 log_cli = true
-log_cli_level = "INFO"
+log_cli_level = "WARNING"
 log_cli_format = "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
 markers = [
     "smoke: critical-path scenarios, run on every PR",

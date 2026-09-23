@@ -111,6 +111,38 @@ def pytest_runtest_makereport(item: pytest.Item, call: pytest.CallInfo):
         logger.exception("Failed to capture failure diagnostics")
 
 
+_CYAN   = "\033[96m"
+_YELLOW = "\033[93m"
+_GREEN  = "\033[92m"
+_RED    = "\033[91m"
+_WHITE  = "\033[37m"
+_BOLD   = "\033[1m"
+_RESET  = "\033[0m"
+
+_KEYWORD_COLOR = {
+    "Given": _CYAN,
+    "When":  _YELLOW,
+    "Then":  _GREEN,
+    "And":   _WHITE,
+    "But":   _WHITE,
+}
+
+
+def pytest_bdd_before_scenario(request, feature, scenario):
+    print(f"\n{_BOLD}  Scenario: {scenario.name}{_RESET}", flush=True)
+
+
+def pytest_bdd_before_step(request, feature, scenario, step, step_func):
+    keyword = step.keyword.strip()
+    color = _KEYWORD_COLOR.get(keyword, _WHITE)
+    print(f"    {_BOLD}{color}{keyword}{_RESET} {step.name}", end="  ", flush=True)
+
+
+def pytest_bdd_after_step(request, feature, scenario, step, step_func, step_func_args):
+    print(f"{_GREEN}✓{_RESET}", flush=True)
+
+
 def pytest_bdd_step_error(request, feature, scenario, step, step_func, step_func_args, exception):
+    print(f"{_RED}✗{_RESET}", flush=True)
     logger.error("Step failed: [%s] %s %s -> %s",
                  scenario.name, step.keyword, step.name, exception)
